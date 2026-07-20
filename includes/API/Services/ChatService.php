@@ -167,6 +167,13 @@ class ChatService extends AbstractService {
 			}
 		}
 
+		if ( $result === null ) {
+			return new WP_Error(
+				'wpmind_no_response',
+				__( '未收到任何服务商的响应', 'wpmind' )
+			);
+		}
+
 		if ( is_wp_error( $result ) ) {
 			do_action( 'wpmind_error', $result, 'chat', $args );
 			return $result;
@@ -637,7 +644,10 @@ class ChatService extends AbstractService {
 	 * @param string $context  上下文
 	 * @return array
 	 */
-	public function filter_chat_response( array $response, array $args, string $context ): array {
+	public function filter_chat_response( ?array $response, array $args, string $context ): array {
+		if ( $response === null ) {
+			return [];
+		}
 		return $response;
 	}
 
